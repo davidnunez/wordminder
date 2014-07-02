@@ -1,3 +1,11 @@
+import os
+
+def print_directory(rootdir):
+	for subdir, dirs, files in os.walk(rootdir):
+	    for file in files:
+	        print subdir+'/'+file
+
+
 # code from http://www.daniweb.com/software-development/python/code/216495/wordcount-of-a-text-file-python
 
 # count lines, sentences, and words of a text file
