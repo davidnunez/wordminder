@@ -1,10 +1,23 @@
+#!/usr/bin/env python
+import envoy
+import requests
+import time
 import os
+import _keys
+
 
 def print_directory(rootdir):
 	for subdir, dirs, files in os.walk(rootdir):
 	    for file in files:
 	        print subdir+'/'+file
 
+def analyze_directory(rootdir):
+        total_words = 0
+	for subdir, dirs, files in os.walk(rootdir):
+	    for file in files:
+                total_words += analyze_file(subdir+'/'+file)
+                print subdir+'/'+file
+        return total_words
 
 # code from http://www.daniweb.com/software-development/python/code/216495/wordcount-of-a-text-file-python
 
@@ -49,3 +62,19 @@ def analyze_file(filename):
         print "Sentences  : ", sentences
         print "Words      : ", words
         return words
+
+# code from https://gist.github.com/MichaelBlume/3962894
+
+#r = envoy.run("find /Users/mike/Dropbox/writing | grep -v DS_Store | xargs wc -c")
+#count = r.std_out.split()[-2]
+#kb_written = int(count) // 1024
+
+words = analyze_directory(_keys.THESIS_DIRECTORY)
+
+r = requests.post(_keys.BEEMINDER_URL,
+        {'auth_token': _keys.BEEMINDER_TOKEN
+        ,'timestamp': time.time()
+        ,'value': words
+        })
+
+print r.text
