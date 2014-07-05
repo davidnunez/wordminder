@@ -28,7 +28,7 @@ def analyze_file(filename):
         print '-' * 50
         try:
           # use a text file you have, or google for this one ...
-          filename = 'lipsum.txt'
+          #filename = 'lipsum.txt'
           textf = open(filename, 'r')
         except IOError:
           print 'Cannot open file %s for reading' % filename
